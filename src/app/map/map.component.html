@@ -1,16 +1,39 @@
-<div class="container">
-  <div class="row">
-    <div class="col">
+<div class="container-fluid">
+<div class="row">
+    <div class="col-md-2">
+      <h1>Map App</h1>
       <div class="input-group">
-      <input type="text" id="pac-input" [(ngModel)]="query" class="form-control" placeholder="Search for..." aria-label="Search for..." >
+      <input required minlength=3 type="text" id="pac-input" (keyup.enter)="getGoogleLocation()" [(ngModel)]="query" class="form-control" placeholder="Search for..." aria-label="Search for..." >
       <span class="input-group-btn">
         <button class="btn btn-secondary" (click)="getGoogleLocation()" type="button">Search</button>
       </span>
     </div>
-    <div class="col">
+    <div class="input-group show-more">
+    <span class="input-group-btn">
+      <button class="btn btn-secondary" (click)="toggleRestaurants()" type="button">{{restaurants}}</button>
+    </span>
+  </div>
+  <div class="input-group show-more">
+  <span class="input-group-btn">
+    <button class="btn btn-secondary" (click)="toggleSchools()" type="button">{{schools}}</button>
+  </span>
+
+</div>
+      </div>
+    <div class="col-sm-10">
       <agm-map [latitude]="lat" [longitude]="lng" [zoom]="zoom" [streetViewControl]="true">
         <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+          <agm-marker
+            *ngFor="let m of marker; let i = index"
+            (markerClick)="clickedMarker(m.label, i)"
+            [latitude]="m.geometry.location.lat"
+            [longitude]="m.geometry.location.lng">
+              <agm-info-window>
+                <strong>{{m.name}}</strong>
+              </agm-info-window>
+          </agm-marker>
       </agm-map>
     </div>
-  </div>
+
 </div>
+  </div>
